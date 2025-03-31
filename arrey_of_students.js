@@ -40,11 +40,11 @@ function Student(firstName, lastName, birthDate, marks) {
     this.birthDate = new Date(birthDate);
     this.marks = marks;
     // Обчислення середньої оцінки
-    this.getAverageScore = function() {
-        return (this.marks.reduce((acc, num) => acc + num, 0) / this.marks.length).toFixed(1);
-    }
+    this.getAverageScore = () => 
+         (this.marks.reduce((acc, num) => acc + num, 0) / this.marks.length).toFixed(1);
+    
     // Обчислення середнього віку
-    this.getAge = function() {
+    this.getAge = () => {
         const today = new Date();
         let age = today.getFullYear() - this.birthDate.getFullYear();
         isBirthdayPassed  = today.getMonth() > this.birthDate.getMonth() || (today.getMonth() === this.birthDate.getMonth() && today.getDate() >= this.birthDate.getDate());
@@ -77,7 +77,7 @@ console.log('Список студентів, які народилися в 4 �
 filterArrayAgeStudent.forEach((student, index) => console.log((index + 1) + " " + student.firstName + " " + student.lastName));
 
 console.log('Сортування студентів, за середнім балом, та віком (якщо середній бал однаковий')
-const sortArrayStudents = getSortArray();
+const sortArrayStudents = getSortArray(); // відсортований список студентів
 sortArrayStudents.forEach(student => displayStudent(getStudentInfo(student)))
 
 // Виведемо на сторінці
@@ -89,7 +89,9 @@ sortArrayStudents.forEach(student => text += `
     <br>
     `)
 text += '</ol>';
-document.getElementById("list").innerHTML = text;
+if (confirm("Вивести відсортований список на сторінці?")) {
+    document.getElementById("list").innerHTML = text;
+}
 
 
 function getStudentInfo(student) {
@@ -125,3 +127,57 @@ function getSortArray() {
 
     return sortArray;
 }
+
+// функція setTimeout
+if (confirm("Вивести список із затримкою (setTimeout)?")) {
+    let listStudents = '<ol>';
+    let interval = 1000;
+    let timerId;
+    for (let i in sortArrayStudents) {
+        interval += 1000;
+        listStudents += `<li> Студент: ${sortArrayStudents[i].firstName} ${sortArrayStudents[i].lastName}<br>
+        Вік: ${sortArrayStudents[i].getAge()} років<br>
+        Середній балл: ${sortArrayStudents[i].getAverageScore()}
+        <p></p></li>`;
+        // console.log(listStudents);
+        timerId = setTimeout(displayListTimeout, interval, listStudents);
+    }
+}
+
+
+function displayListTimeout(listStudents) {
+    document.getElementById("list_Timeout").innerHTML = listStudents;
+}
+
+
+// функція setInterval
+
+let timerId;
+let listStudents = '<ol>';
+
+if (confirm("Вивести список із затримкою (setInterval)?")) {
+    let interval = 1000; // інтервал часу 1 сек
+    
+    timerId = setInterval(displayListInterval, interval);
+    listStudents += '</ol>'
+    document.getElementById("list_Interval").innerHTML = listStudents;
+
+}
+
+displayListInterval.counter = 0;
+
+function displayListInterval() {
+    const i = displayListInterval.counter;
+    if (displayListInterval.counter < sortArrayStudents.length) {
+        listStudents += `<li> Студент: ${sortArrayStudents[i].firstName} ${sortArrayStudents[i].lastName}<br>
+        Вік: ${sortArrayStudents[i].getAge()} років<br>
+        Середній балл: ${sortArrayStudents[i].getAverageScore()}
+        <p></p></li>`;
+        document.getElementById("list_Interval").innerHTML = listStudents;
+        displayListInterval.counter++;
+        
+    } else clearInterval(timerId);
+    
+
+}
+

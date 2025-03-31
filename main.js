@@ -34,3 +34,17 @@ console.log(myFunc(33, 33));
 console.log(func_1(1, 2, 3));
 console.log(func_2(3));
 console.log(func_3('12', '24', '00'));
+
+// Перепишите с использованием функции-стрелки
+// function ask(question, yes, no) {
+//     if (confirm(question)) yes()
+//     else no();
+//   }
+  
+//   ask(
+//     "Вы согласны?",
+//     function() { alert("Вы согласились."); },
+//     function() { alert("Вы отменили выполнение."); }
+//   );
+
+// confirm("Вы согласны?") ? alert("Вы согласились.") : alert("Вы отменили выполнение.");
